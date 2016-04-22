@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cafe/Robot Summary for Repo {{cr.name}}</title>
+</head>
+<body>
+    <h2>Cafe/Robot Summary for Repo {{cr.name}}</h2>
+    <hr />
+    <br>
+    <h3>Counts</h3>
+    <br>
+    <table border="1">
+    <tr>
+        <th>Branch</th>
+        <th>Cases</th>
+        <th>Keywords</th>
+        <th>Unique Cases</th>
+        <th>Unique Keywords</th>
+    {% for k,v in cr.branch_count.items()| sort %}
+    </tr>
+        <td>{{ k }}</td>
+        <td>{{ v['cases'] }}</td>
+        <td>{{ v['kws'] }}</td>
+        <td>{{ cr.total_count['unique'][k]['cases'] }}</td>
+        <td>{{ cr.total_count['unique'][k]['kws'] }}</td>
+    </tr>
+    {% endfor %}
+    </tr>
+        <td style="background-color:#E8E8E8;">merged data</td>
+        <td style="background-color:#E8E8E8;">{{ cr.total_count['cases'] }}</td>
+        <td style="background-color:#E8E8E8;">{{ cr.total_count['kws'] }}</td>
+        <td style="background-color:#E8E8E8;"> </td>
+        <td style="background-color:#E8E8E8;"> </td>
+    </tr>
+    </table>
+    <br>
+    <h3>Details</h3>
+    <br>
+
+    <table border="1">
+    <tr>
+        <th>Type</th>
+        <th>Name</th>
+        {% for k,v in cr.branch_count.items()|sort %}
+        <th>branch:<br>{{k}}</th>
+        {% endfor %}
+    </tr>
+    {% for k,v in cr.files.items()|sort %}
+    <tr>
+        <td style="background-color:#E8E8E8;">File</td>
+        <td style="background-color:#E8E8E8;">
+            {# k is abs path, hide the repo root part. #}
+            {{ k[ cr.root|length:] }}
+        </td>
+        {# The branch labels for file #}
+        {% for b,c in cr.branch_count.items()|sort  %}
+            {% if b in v['branches'] %}
+                <td style="background-color:#CCCCFF;">Y</td>
+            {% else: %}
+                <td></td>
+            {% endif %}
+        {% endfor %}
+    </tr>
+    {# The case part of file #}
+        {% for cs in v['cases'] %}
+        <tr>
+            <td>Case</td>
+            <td>
+                {{ cs['case'] }}
+            </td>
+            {# The branch labels for case #}
+            {% for b,c in cr.branch_count.items() |sort  %}
+                {% if b in cs['branches'] %}
+                    <td style="background-color:#D4FFD4;">Y</td>
+                {% else: %}
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    {# The kw part of file #}
+        {% for kw in v['kws'] %}
+        <tr>
+            <td>Keyword</td>
+            <td>
+                {{ kw['kw'] }}
+            </td>
+            {# The branch labels for case #}
+            {% for b,c in cr.branch_count.items()|sort  %}
+                {% if b in kw['branches'] %}
+                    <td style="background-color:#D4FFFF;">Y</td>
+                {% else: %}
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    {% endfor %}
+
+    </table>
+
+</body>
+</html>
