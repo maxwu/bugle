@@ -53,13 +53,17 @@ class FolderScanner(object):
             st.populate()
             cases = []
             kws = []
+            ftags = []
             for kw in st.keywords:
                 print "-- keyword: %s" % (kw.name)
                 kws.append(kw.name.strip())
             for cs in st.testcase_table.tests:
                 print "-- test case: %s" % (cs.name)
                 cases.append(cs.name.strip())
-            return dict(name=st.name, cases=cases, kws=kws)
+            if st.setting_table.force_tags:
+                ftags = st.setting_table.force_tags.value
+                print "## force tags: %s" % ftags
+            return dict(name=st.name, cases=cases, kws=kws, ftags=ftags)
         except Exception as e:
             print "not a suite: %s, %s" % (file, e)
             return None

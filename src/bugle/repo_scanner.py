@@ -61,7 +61,8 @@ class CaseRepo(object):
         rlist = []
         for b in self.git.branch('--remote').splitlines():
             b = b.strip()[len('origin/'):]
-            if 'HEAD' in b or '/' in b:
+            #FIXME: add ignore branch key words.
+            if 'HEAD' in b or '/' in b or 'PVT' in b:
                 print "ignore branch %s" %b
                 continue
             rlist.append(b)
@@ -171,7 +172,7 @@ class CaseRepo(object):
                     files[k]['branches'] = [bs['branch']]
                     # from now on, files[k] added a list with key 'branch' to record
                     # how many branches it exist in.
-            print "Taken branch %s,\n%s" %(bs['branch'], beauty_dump(files))
+            #print "Taken branch %s,\n%s" %(bs['branch'], beauty_dump(files))
         return files
 
     @staticmethod
@@ -215,7 +216,7 @@ class CaseRepo(object):
     def dump_html(self, temp='files_table.html', output=None):
         if output is None:
             output = './' + self.name + '_case_report.html'
-        env = Environment(loader=PackageLoader('bugle.bugle_app', 'templates'))
+        env = Environment(loader=PackageLoader('bugle.bugle_site', 'templates'))
         print "loading template: %s" %temp
         template = env.get_template(temp)
 

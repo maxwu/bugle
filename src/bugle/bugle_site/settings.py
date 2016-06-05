@@ -36,6 +36,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'chartjs',
+    'bugle_app'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -47,9 +49,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'bugle_app.urls'
+ROOT_URLCONF = 'bugle_site.urls'
 
-WSGI_APPLICATION = 'bugle_app.wsgi.application'
+WSGI_APPLICATION = 'bugle_site.wsgi.application'
 
 
 # Database
@@ -80,3 +82,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#Template DIR
+TEMPLATE_DIRS = (
+    os.path.join(os.path.dirname(__file__), 'templates').replace('\\','/'),
+)
